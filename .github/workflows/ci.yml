@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  tests:
+    name: Unit tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - name: Check script syntax
+        run: |
+          bash -n tests/run
+          node --check scripts/t3-cloud.mjs
+          python3 -m py_compile tests/host/real-engine.py
+      # GitHub's image ships Node 20 or newer, which `node --test` needs.
+      # The real-engine check needs a Cybex OS checkout and Quickshell, so
+      # it runs from that checkout's development shell (see README).
+      - name: Run unit tests
+        run: tests/run
