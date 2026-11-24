@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "id": "digitalpals.t3code",
+  "name": "T3 Code",
+  "version": "1.0.0",
+  "author": "DigitalPals",
+  "license": "MIT",
+  "description": "Watch and steer your T3 Code agents from the menubar. Signs in to T3 Connect, shows how many sessions are running or waiting for you, and opens a panel to read threads, answer approvals and questions, start new threads, and settle, snooze or pin work.",
+  "kinds": [
+    "bar-widget",
+    "service"
+  ],
+  "activation": "on-demand",
+  "entryPoints": {
+    "barWidget": "Widget.qml",
+    "service": "Service.qml"
+  },
+  "barWidget": {
+    "displayName": "T3 Code",
+    "description": "T3 Code sessions through T3 Connect: a status chip with running and waiting counts, and a panel to follow and answer threads.",
+    "category": "AI",
+    "defaultSection": "right",
+    "allowMultiple": false,
+    "defaults": {
+      "showLabel": true
+    },
+    "schema": [
+      {
+        "key": "showLabel",
+        "type": "boolean",
+        "label": "Status label",
+        "defaultValue": true,
+        "description": "Show the waiting/running word on the chip. It is also hidden when the widget's width leaves no room for it."
+      }
+    ]
+  }
+}
