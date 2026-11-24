@@ -148,3 +148,31 @@ test("the Dutch catalog carries only text this plugin shows", () => {
     for (const key of keys)
         assert.ok(sources.includes(JSON.stringify(key)), key);
 });
+
+test("notifications use the host's helper, else notify-send, with data as arguments", t => {
+    const Launch = load("Launch.js");
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), "t3-notify-"));
+    t.after(() => fs.rmSync(dir, { recursive: true, force: true }));
+    const log = path.join(dir, "argv.json");
+    const fake = name => {
+        const bin = path.join(dir, name);
+        fs.mkdirSync(bin);
+        fs.writeFileSync(path.join(bin, name === "omarchy" ? "omarchy-notification-send" : "notify-send"),
+            `#!${process.execPath}\nrequire("node:fs").writeFileSync(${JSON.stringify(log)}, JSON.stringify(process.argv.slice(2)));\n`,
+            { mode: 0o755 });
+        return bin;
+    };
+    const run = bin => {
+        fs.rmSync(log, { force: true });
+        const command = Launch.notifyCommand("T3 Code", "utilities-terminal", "Fix $(rm -rf ~) `x`", "proj · finished");
+        const result = spawnSync("/bin/sh", command.slice(1), { env: { PATH: bin }, encoding: "utf8" });
+        assert.equal(result.status, 0, result.stderr);
+        return fs.existsSync(log) ? JSON.parse(fs.readFileSync(log, "utf8")) : null;
+    };
+    assert.deepEqual(run(fake("omarchy")), ["--app-name", "T3 Code", "-u", "normal", "-i",
+        "utilities-terminal", "Fix $(rm -rf ~) `x`", "proj · finished"]);
+    assert.deepEqual(run(fake("notify")), ["-a", "T3 Code", "-i", "utilities-terminal", "--",
+        "Fix $(rm -rf ~) `x`", "proj · finished"]);
+    assert.equal(run(path.join(dir, "none")), null, "no notifier: nothing runs, no error");
+    assert.match(read("Core/T3Threads.qml"), /T3Host\.notify\(\{/);
+});

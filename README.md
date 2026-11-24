@@ -25,13 +25,11 @@ now installs separately, from Settings → Plugins.
 
 ## Install
 
+In **Settings → Plugins**, under **Cybex OS plugins**, press **Install** next
+to T3 Code. Or from a terminal:
+
 ```bash
 cybex plugin add https://github.com/DigitalPals/cybexos-t3code
-```
-
-Then enable **T3 Code** in **Settings → Plugins**, or from a terminal:
-
-```bash
 cybex plugin enable digitalpals.t3code --section right --width 140
 ```
 

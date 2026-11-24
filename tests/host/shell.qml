@@ -4,7 +4,6 @@ import Quickshell
 import Quickshell.Io
 import "Common"
 import "Bar"
-import "Popovers"
 
 // Real-engine check for the T3 Code plugin, run by tests/host/real-engine.py
 // inside a disposable copy of a Cybex OS shell tree. The plugin is installed
@@ -82,17 +81,19 @@ ShellRoot {
         }
     }
 
-    // The built-in panel, for a before/after comparison screenshot. Its
-    // module is off in this home, so it never connects either.
+    // The built-in panel, for a before/after comparison screenshot, when the
+    // Cybex OS tree still has it (before 1.0 of this plugin). Its module is
+    // off in this home, so it never connects either.
     FloatingWindow {
-        visible: true
+        visible: builtin.status === Loader.Ready
         implicitWidth: 560
         implicitHeight: 420
         color: Theme.barSurface
 
-        T3CodePopover {
-            id: builtinPopover
-            width: implicitWidth
+        Loader {
+            id: builtin
+            source: Quickshell.shellDir + "/Popovers/T3CodePopover.qml"
+            onLoaded: item.width = Qt.binding(() => item.implicitWidth)
         }
     }
 
@@ -142,7 +143,8 @@ ShellRoot {
                 if (root.ticks - root.readyTick < 10)
                     return;
                 root.grab(root.firstBar, "after-bar.png");
-                root.grab(builtinPopover, "before-panel-builtin.png");
+                if (builtin.item)
+                    root.grab(builtin.item, "before-panel-builtin.png");
                 widget.open();
                 root.stage = 1;
             } else if (root.stage === 1) {

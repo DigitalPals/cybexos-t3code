@@ -15,6 +15,19 @@ function helperCommand(script, subcommand) {
         String(script), String(subcommand), NODE_MISSING_MESSAGE];
 }
 
+// A desktop notification. The Cybex OS shell puts its Omarchy helper,
+// omarchy-notification-send, on the PATH of what it starts; notify-send is
+// the fallback. Arguments are passed positionally, never through the shell
+// text, so a thread title cannot become a command.
+function notifyCommand(appName, icon, summary, body) {
+    return ["sh", "-c",
+        "if command -v omarchy-notification-send >/dev/null 2>&1; then "
+            + "exec omarchy-notification-send --app-name \"$1\" -u normal -i \"$2\" \"$3\" \"$4\"; "
+            + "elif command -v notify-send >/dev/null 2>&1; then "
+            + "exec notify-send -a \"$1\" -i \"$2\" -- \"$3\" \"$4\"; fi",
+        "t3-notify", String(appName), String(icon), String(summary), String(body)];
+}
+
 // A file:// URL from Qt.resolvedUrl as a local path.
 function localPath(url) {
     var value = String(url);
@@ -25,6 +38,7 @@ var exported = {
     NODE_MISSING_EXIT: NODE_MISSING_EXIT,
     NODE_MISSING_MESSAGE: NODE_MISSING_MESSAGE,
     helperCommand: helperCommand,
+    notifyCommand: notifyCommand,
     localPath: localPath
 };
 

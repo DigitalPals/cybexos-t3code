@@ -110,14 +110,13 @@ Singleton {
     }
 
     // ---- notifications -----------------------------------------------------
-    // The host puts omarchy-notification-send on the shell's PATH.
     function notify(notification) {
         const summary = String(notification.summary || "");
         if (summary === "")
             return;
-        Quickshell.execDetached(["omarchy-notification-send",
-            "--app-name", String(notification.appName || "T3 Code"),
-            "-u", "normal", "-i", String(notification.appIcon || "utilities-terminal"),
-            summary, String(notification.body || "")]);
+        Quickshell.execDetached(Launch.notifyCommand(
+            notification.appName || "T3 Code",
+            notification.appIcon || "utilities-terminal",
+            summary, notification.body || ""));
     }
 }
