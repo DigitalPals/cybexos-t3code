@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+# Run the plugin's tests.
+#
+#   tests/run                     unit tests (Node 20+ only)
+#   tests/run --host <checkout>   also load the plugin in the real Quickshell
+#                                 host, headless, from a Cybex OS checkout's
+#                                 development shell (needs Nix; see README)
+set -euo pipefail
+cd "$(dirname "$0")/.."
+
+host=""
+if [[ ${1:-} == "--host" ]]; then
+    host=${2:?usage: tests/run [--host <cybexos-checkout>]}
+fi
+
+command -v node >/dev/null || { echo "tests/run: node is required" >&2; exit 2; }
+node --test tests/*.test.cjs
+
+if [[ -n $host ]]; then
+    nix develop "$host" -c python3 tests/host/real-engine.py --cybexos "$host"
+fi

@@ -75,7 +75,7 @@ const sessionEpochContext = new AsyncLocalStorage();
 // Exit status of a non-interactive command that found no active T3 Connect
 // browser session to mint credentials from. Unlike every other failure it
 // cannot clear up by itself, so the panel offers Sign in instead of retrying
-// (Common/T3Connection.qml, signInRequiredExit).
+// (Core/T3Connection.qml, signInRequiredExit).
 export const SIGN_IN_REQUIRED_EXIT = 3;
 
 class SignInRequiredError extends Error {

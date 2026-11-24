@@ -3,7 +3,6 @@
 // entries whose English text appears in this plugin.
 var MESSAGES = {
     " and ": " en ",
-    "%1 (%2)": "%1 (%2)",
     "%1 of %2": "%1 van %2",
     "Always allow": "Altijd toestaan",
     "Always allow this session": "Altijd toestaan in deze sessie",
@@ -49,6 +48,7 @@ var MESSAGES = {
     "On": "Aan",
     "Open T3 Code": "T3 Code openen",
     "Or type a custom answer…": "Of typ een eigen antwoord…",
+    "Panel": "Paneel",
     "Pin": "Vastzetten",
     "Ping": "Ping",
     "Pinned": "Vastgezet",
