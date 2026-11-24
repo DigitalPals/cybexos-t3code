@@ -30,21 +30,11 @@ Singleton {
     // would be a lie here — connect() deliberately arms no timer for it.
     readonly property bool websocketsMissing: socketLoader.status === Loader.Error
 
-    // Whether anything wants the link. The bar module is the one consumer
-    // that needs it unasked; with the module off, a socket and its pings, or
-    // a ticket helper retrying a dead host, are pure idle churn — and merely
-    // constructing this singleton (Settings → Home) must not connect. The
-    // panel still connects while it is open, for an IPC or sign-in opening it
-    // with the module off. Settings.mods is replaced wholesale on every edit,
-    // so this re-evaluates whenever the module list changes.
-    readonly property bool enabled: {
-        const mods = Settings.mods;
-        for (const col of ["left", "center", "right"]) {
-            if (mods[col].some(m => m.id === "t3" && m.on))
-                return true;
-        }
-        return Popouts.open && Popouts.currentName === "t3code";
-    }
+    // Whether anything wants the link: the plugin's service, which is attached
+    // exactly while the plugin is enabled (T3Host). With the plugin disabled, a
+    // socket and its pings, or a ticket helper retrying a dead host, are pure
+    // idle churn, and these singletons outlive the plugin in the shell.
+    readonly property bool enabled: T3Host.active
 
     property string host: ""            // https base url from the state file
     property string wsBaseUrl: ""
@@ -273,7 +263,7 @@ Singleton {
         property int lastExit: 0
         property string errText: ""
 
-        command: ["node", Quickshell.shellDir + "/scripts/t3-cloud.mjs", "login"]
+        command: T3Host.helperCommand("login")
         stdout: StdioCollector {}
         stderr: StdioCollector {
             onStreamFinished: cloudLoginProc.errText = text.trim()
@@ -323,7 +313,7 @@ Singleton {
         property int reconnectEpoch: -1
         property int timedOutEpoch: -1
 
-        command: ["node", Quickshell.shellDir + "/scripts/t3-cloud.mjs", "ticket"]
+        command: T3Host.helperCommand("ticket")
         stdout: StdioCollector {
             onStreamFinished: cloudTicketProc.outText = text
         }
@@ -383,6 +373,13 @@ Singleton {
                 // of retrying the helper and its Clerk calls forever.
                 root.connectionError = "T3 Connect sign-in has expired";
                 root.state = root.stateWithoutCredential();
+                return;
+            } else if (cloudTicketProc.exitSeen
+                    && cloudTicketProc.lastExit === T3Host.nodeMissingExit) {
+                // Node.js is missing. No retry can install it: say so and
+                // stay offline until the next sign-in or reconnect attempt.
+                root.connectionError = T3Host.nodeMissingMessage;
+                root.state = "offline";
                 return;
             } else {
                 root.connectionError = cloudTicketProc.errText !== ""
@@ -582,8 +579,10 @@ Singleton {
     // hold arrive while bindings over them may not have settled yet, which
     // is also why the resume edge passes `resumed` instead of reading idle.
     function retryHold(resumed) {
-        return Helpers.reconnectHold(NetworkStatus.known, NetworkStatus.online,
-            Helpers.isLoopbackOrigin(host), resumed ? false : Activity.idle);
+        // The shell's NetworkManager status is private to it; only the idle
+        // hold (T3Host.idle) is available to a plugin.
+        return Helpers.reconnectHold(false, true,
+            Helpers.isLoopbackOrigin(host), resumed ? false : T3Host.idle);
     }
 
     // A hold just ended (or the user came back to a long backoff): try now
@@ -752,26 +751,9 @@ Singleton {
         }
     }
 
-    // The edges that end a hold. Regaining the network also starts the
-    // backoff over: the failures it counted were the outage, not the server.
+    // The edge that ends an idle hold.
     Connections {
-        target: NetworkStatus
-
-        function onOnlineChanged() {
-            if (NetworkStatus.online)
-                root.resumeReconnect(true, false);
-        }
-
-        // Losing the status read ends a network hold as well: an unknown
-        // state holds nothing back, and no online edge may ever follow.
-        function onKnownChanged() {
-            if (!NetworkStatus.known)
-                root.resumeReconnect(false, false);
-        }
-    }
-
-    Connections {
-        target: Activity
+        target: T3Host
 
         function onResumed() {
             root.resumeReconnect(false, true);

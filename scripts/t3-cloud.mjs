@@ -23,13 +23,10 @@ import os from "node:os";
 import path from "node:path";
 import { AsyncLocalStorage } from "node:async_hooks";
 import { createRequire } from "node:module";
-import { fileURLToPath, pathToFileURL } from "node:url";
+import { pathToFileURL } from "node:url";
 
 const require = createRequire(import.meta.url);
-// The shell configuration this helper ships in. Quickshell runs it by path
-// and does not pass that path to its children, so IPC must name it.
-const SHELL_DIR = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
-const { safeHttpUrl } = require("../Common/ExternalUrl.js");
+const { safeHttpUrl } = require("../Core/ExternalUrl.js");
 
 export const CLOUD_CONFIG = Object.freeze({
     clerkUrl: process.env.T3CODE_CLERK_URL?.trim() || "https://clerk.t3.codes",
@@ -806,9 +803,10 @@ function decodeIdentity(idToken, fallbackToken = "") {
 
 function activatePanel() {
     try {
-        const child = spawn("qs", [
-            "ipc", "--any-display", "-p", SHELL_DIR,
-            "call", "--", "popouts", "open", "t3code",
+        // The Cybex OS shell puts its Omarchy IPC helper on the PATH of the
+        // processes it starts; the plugin's service owns this target.
+        const child = spawn("omarchy-shell", [
+            "-q", "digitalpals.t3code", "open",
         ], {
             detached: true,
             stdio: "ignore",

@@ -284,7 +284,7 @@ Singleton {
         repeat: true
         triggeredOnStart: true
         running: T3Connection.state === "connected" && root.runningCount > 0
-            && Popouts.open && Popouts.currentName === "t3code"
+            && T3Host.panelOpen
         onTriggered: root.workingNowMs = Date.now()
     }
 
@@ -302,7 +302,7 @@ Singleton {
             what = "finished";
         else
             return;
-        Notifs.send({
+        T3Host.notify({
             appName: "T3 Code",
             appIcon: "utilities-terminal",
             summary: th.title,

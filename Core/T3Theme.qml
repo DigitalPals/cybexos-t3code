@@ -1,7 +1,7 @@
 pragma Singleton
 import QtQuick
 import Quickshell
-import "SettingsHelpers.js" as SettingsHelpers
+import "Contrast.js" as SettingsHelpers
 
 // T3 Code keeps its own spacing, radii, and surface hierarchy, but participates
 // in the shell's semantic palette. This makes wallpaper and fixed accent
@@ -48,7 +48,7 @@ Singleton {
     readonly property color link: accent
     readonly property color accentSoft: Theme.accentBg
     readonly property color accentSubtle: Theme.accentBgSoft
-    readonly property color focus: Settings.highContrast ? Theme.accentText : Theme.accentGlow
+    readonly property color focus: Theme.accentGlow
 
     readonly property color amber: Theme.amber
     readonly property color amberSoft: Theme.amberBgSoft

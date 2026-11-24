@@ -46,7 +46,7 @@ Item {
         color: root.tint
         // Focus lifts the layer only for keyboard modality; a clicked control
         // must not keep looking pressed (FocusModality).
-        opacity: root.pressed || (root.focused && FocusModality.keyboard) ? Theme.statePressedOpacity
+        opacity: root.pressed || (root.focused && T3Host.keyboardModality) ? Theme.statePressedOpacity
             : root.hovered ? Theme.stateHoverOpacity : 0
 
         Behavior on opacity {

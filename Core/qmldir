@@ -1,0 +1,23 @@
+# Every Core type must be listed: a directory with a qmldir is not scanned.
+# T3Socket.qml is deliberately absent. T3Connection loads it by path, so a
+# missing QtWebSockets module fails that Loader instead of every import.
+BrandIcon BrandIcon.qml
+singleton BrandIcons BrandIcons.qml
+singleton I18n I18n.qml
+ScrollChrome ScrollChrome.qml
+StatusPlaceholder StatusPlaceholder.qml
+Sym Sym.qml
+singleton T3Actions T3Actions.qml
+singleton T3Code T3Code.qml
+singleton T3Connection T3Connection.qml
+singleton T3Detail T3Detail.qml
+singleton T3Drafts T3Drafts.qml
+singleton T3Favorites T3Favorites.qml
+singleton T3Git T3Git.qml
+singleton T3Host T3Host.qml
+singleton T3Rpc T3Rpc.qml
+singleton T3Theme T3Theme.qml
+singleton T3Threads T3Threads.qml
+singleton TablerIcons TablerIcons.qml
+singleton Theme Theme.qml
+StateLayer StateLayer.qml
