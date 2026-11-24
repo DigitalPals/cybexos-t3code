@@ -1,7 +1,7 @@
 pragma ComponentBehavior: Bound
 import QtQuick
 import Quickshell
-import "../Common"
+import "../Core"
 
 Item {
     id: root
@@ -583,7 +583,7 @@ Item {
                     tint: T3Theme.accent
                     onTriggered: {
                         if (T3Code.openExternalUrl(T3Code.threadUrl(root.threadId)))
-                            Popouts.close();
+                            T3Host.closePanel();
                     }
                 }
 
@@ -663,7 +663,7 @@ Item {
                     onTriggered: {
                         root.menuOpen = false;
                         if (T3Code.openExternalUrl(root.prUrl))
-                            Popouts.close();
+                            T3Host.closePanel();
                     }
                 }
 
@@ -1141,7 +1141,7 @@ Item {
                             tint: T3Theme.accent
                             onTriggered: {
                                 if (T3Code.openExternalUrl(T3Code.threadUrl(root.threadId)))
-                                    Popouts.close();
+                                    T3Host.closePanel();
                             }
                         }
                     }
@@ -1412,7 +1412,7 @@ Item {
                         tint: T3Theme.accent
                         onTriggered: {
                             if (T3Code.openExternalUrl(T3Code.threadUrl(root.threadId)))
-                                Popouts.close();
+                                T3Host.closePanel();
                         }
                     }
                 }

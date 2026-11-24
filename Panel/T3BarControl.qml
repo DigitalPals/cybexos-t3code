@@ -1,6 +1,6 @@
 pragma ComponentBehavior: Bound
 import QtQuick
-import "../Common"
+import "../Core"
 
 // One control on the composer's action bar: mark, current value, chevron.
 //

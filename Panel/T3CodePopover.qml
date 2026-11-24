@@ -1,6 +1,6 @@
 pragma ComponentBehavior: Bound
 import QtQuick
-import "../Common"
+import "../Core"
 
 // T3 Code's dedicated attached panel. It keeps its own wider measure, source,
 // navigation, and IPC name. The host hangs it from the T3 widget and supplies

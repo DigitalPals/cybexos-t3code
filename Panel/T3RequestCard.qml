@@ -1,6 +1,6 @@
 pragma ComponentBehavior: Bound
 import QtQuick
-import "../Common"
+import "../Core"
 
 // Composer-attached approval or structured-question drawer. Question answers
 // and paging live in T3Code, so rejected requests remain intact across navigation.

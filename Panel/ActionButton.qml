@@ -1,5 +1,5 @@
 import QtQuick
-import "../Common"
+import "../Core"
 
 // The small pill button the T3 pages use for every inline action — Expand,
 // Approve, Snooze, Stop, and the rest.

@@ -1,5 +1,5 @@
 import QtQuick
-import "../Common"
+import "../Core"
 
 // Compact T3 header icon button. Tabler icons avoid the baseline and
 // weight inconsistencies of typographic arrows while retaining a text-only

@@ -1,6 +1,6 @@
 pragma ComponentBehavior: Bound
 import QtQuick
-import "../Common"
+import "../Core"
 
 Item {
     id: root

@@ -1,0 +1,19 @@
+# Every Panel type must be listed: a directory with a qmldir is not scanned.
+ActionButton ActionButton.qml
+BarBrandIcon BarBrandIcon.qml
+BarChip BarChip.qml
+IconButton IconButton.qml
+PopoutPanel PopoutPanel.qml
+SectionLabel SectionLabel.qml
+Surface Surface.qml
+T3BarControl T3BarControl.qml
+T3Chip T3Chip.qml
+T3CodePopover T3CodePopover.qml
+T3Composer T3Composer.qml
+T3InboxPage T3InboxPage.qml
+T3InlineSelect T3InlineSelect.qml
+T3ModelPicker T3ModelPicker.qml
+T3NewThreadPage T3NewThreadPage.qml
+T3Picker T3Picker.qml
+T3RequestCard T3RequestCard.qml
+T3ThreadPage T3ThreadPage.qml

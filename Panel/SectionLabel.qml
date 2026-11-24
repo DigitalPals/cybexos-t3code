@@ -1,5 +1,5 @@
 import QtQuick
-import "../Common"
+import "../Core"
 
 // The shared section mark, in the shape Settings/SectionHeader.qml draws and
 // the T3 and GitHub inboxes draw inline: an uppercase micro label and a

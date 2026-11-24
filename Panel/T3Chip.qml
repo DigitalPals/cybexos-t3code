@@ -1,6 +1,6 @@
 import QtQuick
 import QtQuick.Effects
-import "../Common"
+import "../Core"
 
 // T3 Code chip: the official T3 mark (pingdotgg/t3code, MIT), a live dot while
 // agents are working, and a status word. Sessions needing approval or input
@@ -39,6 +39,9 @@ BarChip {
     // Keep the expanded measurement available while the label is compacted;
     // otherwise the fit pass forgets this saving and oscillates between chips.
     readonly property real detailSaving: labelText.implicitWidth + spacing
+    // The chip's width without the word, for the widget's fit check.
+    readonly property real compactWidth: leftPadding + rightPadding + t3Mark.width
+        + spacing + busyDot.width
 
     shape: "inner"
     hPadding: 9
@@ -84,6 +87,7 @@ BarChip {
     // Live work: a lit dot with its own bloom, deliberately static. A pulse
     // here would animate a permanent fixture of the bar.
     Item {
+        id: busyDot
         anchors.verticalCenter: parent.verticalCenter
         width: root.busy ? 5 : 0
         height: 5

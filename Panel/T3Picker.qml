@@ -1,6 +1,6 @@
 pragma ComponentBehavior: Bound
 import QtQuick
-import "../Common"
+import "../Core"
 
 // Small keyboard-friendly picker used by the T3 composer and New Thread form.
 Item {

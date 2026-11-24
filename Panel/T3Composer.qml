@@ -1,6 +1,6 @@
 pragma ComponentBehavior: Bound
 import QtQuick
-import "../Common"
+import "../Core"
 
 // T3's composer is one recognisable glass surface: prompt above, contextual
 // controls and a round send action below. Detailed run settings unfold as a
